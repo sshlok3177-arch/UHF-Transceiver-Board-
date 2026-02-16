@@ -137,7 +137,7 @@ GenerateClassCluster=0
 DocumentUniqueId=AQNHTUIG
 
 [Document6]
-DocumentPath=FlashNTemp.SchDoc
+DocumentPath=TempSensor.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -222,7 +222,7 @@ GenerateClassCluster=0
 DocumentUniqueId=
 
 [Document11]
-DocumentPath=RS485.SchDoc
+DocumentPath=RS485NFlash.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
