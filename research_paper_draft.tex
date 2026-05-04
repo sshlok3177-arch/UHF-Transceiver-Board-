@@ -1,0 +1,283 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% ===== Custom command for TBD placeholders =====
+\newcommand{\tbd}[1]{\textcolor{red}{\textbf{[TBD: #1]}}}
+
+\begin{document}
+
+\title{Design and Simulation of a UHF Communication Subsystem for a 3U CubeSat Mission}
+
+% Alternate titles to consider:
+%   \title{Integrated Design of a UHF Transceiver Board with a Deployable Quadrifilar Helix Antenna for a 3U CubeSat}
+%   \title{A Low-Power UHF Communication Subsystem for a 3U CubeSat in LEO: System-Level Design and Simulation}
+
+\author{
+\IEEEauthorblockN{Shlok Sharma, Hiten Dhiman, Vedant Vaidya, Aalok Prajapati}
+\IEEEauthorblockA{
+\textit{MIT World Peace University (MIT-WPU)} \\
+Pune, India \\
+Email: sterg@mitwpu.edu.in
+}
+}
+
+\maketitle
+
+% =========================================================
+\begin{abstract}
+\tbd{150--250 words. Write last. Will cover: problem (UHF TT\&C for a 3U CubeSat in 500~km LEO whose payload performs onboard edge-intelligence image processing, so the comm link only needs to return processed results rather than raw imagery --- motivating a low-rate, low-power, high-reliability design); approach (integrated subsystem --- Si4464 transceiver with Mini-Circuits PMA-7+ external PA, STM32U575 MCU under FreeRTOS, CCSDS + Reed--Solomon stack, deployable 4-turn LHCP quadrifilar helix antenna with spring + burn-wire release, L-network matching, Chebyshev LPF and BPF); key simulated numbers (antenna S$_{11} \approx -25$ to $-30$~dB, link margins at 10$^\circ$/30$^\circ$/90$^\circ$ elevation at 500~km); contribution (documented, self-consistent system-level design and simulation of a complete CubeSat UHF subsystem co-designed with an edge-AI payload).}
+\end{abstract}
+
+\begin{IEEEkeywords}
+CubeSat, UHF communication, quadrifilar helix antenna, impedance matching, link budget, GFSK, CCSDS, FreeRTOS, Reed--Solomon, STM32
+\end{IEEEkeywords}
+
+% =========================================================
+\section{Introduction}
+
+\subsection{Mission Context}
+This work presents the UHF communication subsystem developed for a 3U CubeSat mission targeting a 500~km low Earth orbit. The spacecraft's payload captures visible (RGB) and ultraviolet imagery of the Earth and performs onboard image processing and inference --- \textit{edge intelligence in space} --- so that the communication link carries compact processed data products, telemetry, and command traffic rather than raw image data. This mission architecture relaxes the required downlink data rate and shifts the subsystem design priorities toward link reliability, low power, and deployment heritage, which together motivate the choices presented in this paper.
+
+The UHF band was chosen for its well-understood propagation, modest ground-station requirements, and suitability for low-rate, high-reliability telemetry, tracking, and command (TT\&C) links. The subsystem operates with a 401--402~MHz transmit band and a 402--403~MHz receive band, within the allocations used for space operations and space research.
+
+\subsection{Prior Work}
+\tbd{3--5 references. Candidates: NASA CubeSat Handbook; Muri \& McNair (2012) CubeSat RF survey; AX.25 and CCSDS protocol references; QFH antenna papers (Kilgus 1969 original, Amin 2008 for CubeSat use); Si446x CubeSat implementations.}
+
+\subsection{Contribution}
+This paper presents the integrated system-level design and simulation of a UHF communication subsystem for a 3U CubeSat, covering the RF front-end, deployable antenna, matching network, firmware stack, and link budget. The contribution is not a single novel component but a documented, self-consistent subsystem design where antenna, matching, and link-layer parameters are jointly optimized against a 500~km LEO link budget for elevation angles of 10$^\circ$, 30$^\circ$, and 90$^\circ$.
+
+% =========================================================
+\section{System Architecture}
+
+\tbd{Figure 1: Block diagram --- MCU $\leftrightarrow$ Transceiver $\leftrightarrow$ Matching Network $\leftrightarrow$ Filter $\leftrightarrow$ Antenna, plus power rails and deployment driver.}
+
+\begin{table}[!t]
+\caption{UHF Subsystem Top-Level Parameters}
+\label{tab:sys}
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+TX frequency band & 401--402 MHz \\
+RX frequency band & 402--403 MHz \\
+Modulation & GFSK \\
+Data rate & 9600 bps \\
+MCU & STM32U575 (ARM Cortex-M33) \\
+Transceiver & Silicon Labs Si4464 \\
+External PA & Mini-Circuits PMA-7+ \\
+Protocol stack & CCSDS \\
+FEC & Reed--Solomon \\
+RTOS & FreeRTOS \\
+Board dimensions & 91 $\times$ 94 mm \\
+Form factor & PC/104-inspired (custom) \\
+Nominal power & 2--3 W \\
+Peak power & 5--6 W (TX + PA) \\
+Supply rails & 3.3 V (digital), 12 V (PA) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The STM32U575 was selected for its ultra-low-power operating modes, enabling duty-cycled operation between passes; the Si4464 was chosen for its native GFSK support, integrated packet handling, and wide supply range suitable for CubeSat power constraints.
+
+% =========================================================
+\section{Antenna Design and Simulation}
+
+\subsection{Topology}
+A deployable four-turn quadrifilar helix antenna (QHA/QFH) was designed to provide left-hand circular polarization (LHCP) with near-hemispherical coverage, which is well-matched to CubeSat tumbling and low-elevation communication scenarios.
+
+\subsection{Deployment}
+The antenna uses a combined spring-release and burn-wire deployment mechanism: a resistive burn-wire element retains the stowed antenna against a spring force; on command, current through the wire melts the retention, and the spring extends the helix elements to the deployed geometry. \tbd{Confirm burn-wire current, burn time, and retention material at a functional level.}
+
+\subsection{Simulation Setup}
+Electromagnetic simulation was performed in Ansys HFSS. \tbd{Boundary conditions, solver type (driven modal / terminal), mesh refinement, CubeSat chassis inclusion.}
+
+\subsection{Simulated Results}
+\begin{itemize}
+\item Return loss (S$_{11}$): $-25$ to $-30$~dB at the operating band (best case).
+\item \tbd{Figure 2 --- S$_{11}$ plot vs. frequency (HFSS export)}
+\item \tbd{Figure 3 --- Radiation pattern (elevation/azimuth cuts or 3D)}
+\item Gain: \tbd{dBi}
+\item Axial ratio: \tbd{dB --- critical for CP antennas}
+\item $-10$ dB impedance bandwidth: \tbd{MHz}
+\item Radiation efficiency: \tbd{\% or dB}
+\end{itemize}
+
+% =========================================================
+\section{RF Front-End and Impedance Matching}
+
+\subsection{Functional Description}
+The RF chain between the Si4464 transceiver and the deployable QFH antenna includes an external power amplifier, lumped-element impedance matching, and two cascaded filter stages. The TX signal path is:
+\begin{center}
+\texttt{Si4464 TX $\to$ matching $\to$ BPF $\to$ PMA-7+ PA $\to$ LPF $\to$ antenna}
+\end{center}
+
+\subsection{Matching Network}
+The matching network uses a lumped LC L-network topology. An L-network was selected over Pi or T topologies for its minimal component count (two reactive elements), low insertion loss, and sufficient Q for the 1~MHz operational band centered around 401.5~MHz. Exact component values are not disclosed.
+
+\subsection{Filter Design}
+Two Chebyshev filters are used:
+\begin{itemize}
+\item A band-pass filter (BPF) centered in 401--403~MHz for out-of-band rejection on the TX path ahead of the PA and on the RX path.
+\item A low-pass filter (LPF) after the PA for harmonic suppression (2$f_0$, 3$f_0$ attenuation).
+\end{itemize}
+Both filters were synthesized using Ansys Nuhertz FilterSolutions with a Chebyshev response chosen to maximize in-band passband flatness given the narrow operating band and to meet harmonic rejection targets with minimum order. \tbd{Filter orders and passband ripple.}
+
+\subsection{Power Amplifier}
+The Mini-Circuits PMA-7+ was selected as the external TX power amplifier. It is a broadband E-PHEMT MMIC covering the UHF range, biased from the 12~V rail. \tbd{Insert datasheet values at 400 MHz: typical gain (dB), P1dB (dBm), saturated Pout (dBm), DC current.}
+
+\subsection{Simulated RF Chain Performance}
+\begin{itemize}
+\item Antenna return loss (S$_{11}$): $-25$ to $-30$~dB in-band (best case).
+\item Matching + filter chain simulated insertion loss: \tbd{dB}. \textit{Note: do not claim 0 dB; all passive chains have finite loss.}
+\item Combined chain return loss at antenna port: \tbd{dB}.
+\item Harmonic rejection from LPF: \tbd{dB at 2$f_0$, 3$f_0$.}
+\item \tbd{Figure 4 --- Simulated S-parameters of matching + filter cascade.}
+\end{itemize}
+
+% =========================================================
+\section{Mechanical Structure and Deployment}
+
+\subsection{Board Form Factor and Stack Position}
+The communication board is 91 $\times$ 94~mm, derived from but not identical to the PC/104 standard, customized for the mechanical constraints of the 3U CubeSat chassis. The board is placed at the \textit{nadir end} of the 3U stack --- the face pointing toward Earth in the mission's nominal attitude --- so that the deployable QFH antenna extends away from the spacecraft toward Earth. This placement maximizes the usable ground-visibility cone of the LHCP pattern and keeps the antenna away from the payload aperture on the opposite face. \tbd{Board mass (g).}
+
+\subsection{Deployment Mechanism}
+The antenna deployment combines a compression spring with a burn-wire release. This combination was chosen for its heritage in CubeSat missions, low part count, and single-shot reliability: the spring provides the deployment energy, and the burn-wire provides a reliable, commandable release mechanism with a well-characterized activation current.
+
+\subsection{Structural Analysis}
+\tbd{Modal frequency, first-mode result, static load analysis if done. If none, drop this section or move to future work.}
+
+% =========================================================
+\section{Firmware and Protocol}
+
+\subsection{Architecture}
+Firmware runs on FreeRTOS on the STM32U575. The architecture follows a layered model:
+\begin{itemize}
+\item \textbf{PHY}: Si4464 driver (SPI), packet assembly, GFSK configuration.
+\item \textbf{Data-link}: CCSDS framing with Reed--Solomon FEC.
+\item \textbf{Application}: TT\&C handlers, command dispatcher, housekeeping telemetry.
+\end{itemize}
+
+\tbd{Figure 5 --- Firmware architecture / task diagram. Show FreeRTOS tasks: RX, TX, housekeeping, watchdog.}
+
+\subsection{Protocol Choices}
+CCSDS (Consultative Committee for Space Data Systems) framing was adopted for interoperability with standard ground station software and heritage compatibility with space missions. Reed--Solomon FEC, \tbd{RS(255,223) per CCSDS --- confirm}, provides burst-error correction suited to fade events during low-elevation passes.
+
+% =========================================================
+\section{Link Budget}
+
+Link budget was computed for a 500~km circular LEO at three elevation angles: 10$^\circ$, 30$^\circ$, and 90$^\circ$.
+
+\subsection{Assumptions}
+
+\begin{table}[!t]
+\caption{Link Budget Assumptions}
+\label{tab:lb_assump}
+\centering
+\begin{tabular}{ll}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Orbit altitude & 500 km \\
+Elevation angles & 10$^\circ$, 30$^\circ$, 90$^\circ$ \\
+Uplink frequency & 402.5 MHz \\
+Downlink frequency & 401.5 MHz \\
+Data rate & 9600 bps \\
+Modulation & GFSK \\
+FEC & RS(255,223) \\
+Required E$_b$/N$_0$ (uncoded, BER 10$^{-5}$) & $\sim$10.6 dB \\
+Coding gain (RS) & $\sim$3 dB \\
+Satellite TX chain & Si4464 + PMA-7+ \\
+Satellite antenna & 4-turn LHCP QFH, nadir \\
+Ground station antenna gain & \tbd{dBi} \\
+Ground station G/T & \tbd{dB/K} \\
+Polarization loss & 3 dB (CP-to-linear worst case) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Downlink Budget}
+\tbd{Full downlink link budget table. Awaiting user values from link\_budget\_fillin.md.}
+
+\subsection{Uplink Budget}
+\tbd{Full uplink link budget table.}
+
+\subsection{Link Margin Summary}
+
+\begin{table}[!t]
+\caption{Link Margin (dB) by Elevation Angle}
+\label{tab:margin}
+\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{Elevation} & \textbf{Uplink} & \textbf{Downlink} \\
+\midrule
+10$^\circ$ & \tbd{} & \tbd{} \\
+30$^\circ$ & \tbd{} & \tbd{} \\
+90$^\circ$ & \tbd{} & \tbd{} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =========================================================
+\section{Results and Validation Plan}
+
+\subsection{Summary of Simulated Results}
+\begin{itemize}
+\item Antenna S$_{11}$: $-25$ to $-30$~dB (best case) in 401--403~MHz.
+\item Matching network and filter chain: \tbd{insertion loss, return loss}.
+\item Link margin: \tbd{populate from §VII}.
+\end{itemize}
+
+\subsection{Planned Hardware Validation}
+Once the flight board is fabricated, planned measurements include:
+\begin{enumerate}
+\item Antenna S$_{11}$ on a calibrated VNA in a ground-plane-representative environment.
+\item Radiation pattern measurement in an anechoic chamber or open-field.
+\item End-to-end RF test using the Si4464 in loopback against a ground-station receiver.
+\item Power consumption characterization in nominal and peak modes.
+\item Deployment test of the spring + burn-wire mechanism.
+\end{enumerate}
+This measurement campaign is deferred to future work.
+
+% =========================================================
+\section{Discussion}
+
+\subsection{Design Tradeoffs}
+\tbd{User writes this. Cover: rate vs. link margin; antenna choice; nadir placement; band choice; MCU choice; PA choice; protocol choice.}
+
+\subsection{Limitations}
+\begin{itemize}
+\item No flight hardware yet; results are simulation-only.
+\item Antenna pattern simulated without the full CubeSat chassis; actual pattern will differ.
+\item Link budget uses idealized atmospheric loss model.
+\item \tbd{Firmware tested on dev board? End-to-end validation status?}
+\end{itemize}
+
+% =========================================================
+\section{Conclusion and Future Work}
+\tbd{User writes. $\sim$150 words. Honest: designed and simulated; next step is fabrication, measurement, integration.}
+
+% =========================================================
+\section*{Acknowledgements}
+\tbd{Advisor name, lab, funding / institutional support.}
+
+% =========================================================
+\begin{thebibliography}{00}
+\bibitem{placeholder} \tbd{Populate with $\sim$20 IEEE-format references: CubeSat Handbook, Kilgus QFH 1969, Si446x papers, CCSDS specs, FreeRTOS references, STM32U5 app notes, etc.}
+\end{thebibliography}
+
+\end{document}

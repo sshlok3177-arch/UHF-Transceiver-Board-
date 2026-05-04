@@ -1,0 +1,200 @@
+StiFile 1.2
+# File generated on Fri Mar 27 11:22:23 2026
+
+Electric 1:
+  name: "IC3"
+  voltage: 3.29729
+  current: -2.70006
+  pluspin: 1  voltage: 3.29729  current: -1.29676  name: "IC3-1"
+  pluspin: 3  voltage: 3.2973  current: -0.144388  name: "IC3-3"
+  pluspin: 2  voltage: 3.29729  current: -1.25892  name: "IC3-20"
+  minpin: 0  voltage: 0  current: 2.70006  name: "IC3.min"
+
+Electric 2:
+  name: "C30"
+  voltage: 3.26829
+  current: 0.150003
+  pluspin: 13  voltage: 3.26829  current: 0.150003  name: "C30-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C30.min"
+
+Electric 3:
+  name: "C27"
+  voltage: 3.27386
+  current: 0.150003
+  pluspin: 15  voltage: 3.27386  current: 0.150003  name: "C27-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C27.min"
+
+Electric 4:
+  name: "C31"
+  voltage: 3.27123
+  current: 0.150003
+  pluspin: 17  voltage: 3.27123  current: 0.150003  name: "C31-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C31.min"
+
+Electric 5:
+  name: "C32"
+  voltage: 3.2689
+  current: 0.150003
+  pluspin: 19  voltage: 3.2689  current: 0.150003  name: "C32-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C32.min"
+
+Electric 6:
+  name: "C28"
+  voltage: 3.27423
+  current: 0.150003
+  pluspin: 21  voltage: 3.27423  current: 0.150003  name: "C28-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C28.min"
+
+Electric 7:
+  name: "C29"
+  voltage: 3.27611
+  current: 0.150003
+  pluspin: 23  voltage: 3.27611  current: 0.150003  name: "C29-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C29.min"
+
+Electric 8:
+  name: "C33"
+  voltage: 3.27503
+  current: 0.150003
+  pluspin: 25  voltage: 3.27503  current: 0.150003  name: "C33-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C33.min"
+
+Electric 9:
+  name: "C34"
+  voltage: 3.27461
+  current: 0.150003
+  pluspin: 27  voltage: 3.27461  current: 0.150003  name: "C34-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C34.min"
+
+Electric 10:
+  name: "C1"
+  voltage: 3.26291
+  current: 0.150003
+  pluspin: 29  voltage: 3.26291  current: 0.150003  name: "C1-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C1.min"
+
+Electric 11:
+  name: "R11"
+  voltage: 0.0128948
+  current: 2.57897e-06
+  pluspin: 31  voltage: 3.28982  current: 2.57896e-06  name: "R11-2"
+  minpin: 32  voltage: 3.27692  current: -2.579e-06  name: "C61-2"
+
+Electric 12:
+  name: "R10"
+  voltage: 0.0100652
+  current: 2.01304e-06
+  pluspin: 33  voltage: 3.28699  current: 2.01301e-06  name: "R10-2"
+  minpin: 32  voltage: 3.27692  current: -2.01306e-06  name: "C61-2"
+
+Electric 13:
+  name: "R9"
+  voltage: 0.0128948
+  current: 2.57897e-06
+  pluspin: 34  voltage: 3.28982  current: 2.57896e-06  name: "R9-2"
+  minpin: 32  voltage: 3.27692  current: -2.579e-06  name: "C61-2"
+
+Electric 14:
+  name: "R8"
+  voltage: 0.0128949
+  current: 2.57898e-05
+  pluspin: 35  voltage: 3.28982  current: 2.57897e-05  name: "R8-2"
+  minpin: 32  voltage: 3.27692  current: -2.57898e-05  name: "C61-2"
+
+Electric 15:
+  name: "Y1"
+  voltage: 3.26254
+  current: 0.150003
+  pluspin: 36  voltage: 3.26254  current: 0.150003  name: "Y1-4"
+  minpin: 0  voltage: 0  current: -0.150003  name: "Y1.min"
+
+Electric 16:
+  name: "R14"
+  voltage: -0.0103501
+  current: -2.07003e-06
+  pluspin: 38  voltage: 3.26657  current: -2.07003e-06  name: "R14-2"
+  minpin: 32  voltage: 3.27692  current: 2.06999e-06  name: "C61-2"
+
+Electric 17:
+  name: "R13"
+  voltage: -0.0128701
+  current: -2.57402e-06
+  pluspin: 39  voltage: 3.26405  current: -2.57403e-06  name: "R13-2"
+  minpin: 32  voltage: 3.27692  current: 2.57399e-06  name: "C61-2"
+
+Electric 18:
+  name: "R12"
+  voltage: -0.0128702
+  current: -2.57403e-05
+  pluspin: 40  voltage: 3.26405  current: -2.57404e-05  name: "R12-2"
+  minpin: 32  voltage: 3.27692  current: 2.57403e-05  name: "C61-2"
+
+Electric 19:
+  name: "R15"
+  voltage: -0.0128701
+  current: -2.57402e-06
+  pluspin: 41  voltage: 3.26405  current: -2.57403e-06  name: "R15-2"
+  minpin: 32  voltage: 3.27692  current: 2.57399e-06  name: "C61-2"
+
+Electric 20:
+  name: "IC1"
+  voltage: 3.27276
+  current: 0.150003
+  pluspin: 45  voltage: 3.27274  current: 0.374064  name: "IC1-1"
+  pluspin: 46  voltage: 3.27274  current: 0.09978  name: "IC1-13"
+  pluspin: 47  voltage: 3.27274  current: 0.123891  name: "IC1-19"
+  pluspin: 43  voltage: 3.27273  current: -0.177463  name: "IC1-32"
+  pluspin: 42  voltage: 3.27273  current: -0.457183  name: "IC1-48"
+  pluspin: 44  voltage: 3.27274  current: 0.186913  name: "IC1-64"
+  minpin: 0  voltage: 0  current: -0.150003  name: "IC1.min"
+
+Electric 21:
+  name: "C22"
+  voltage: 3.29523
+  current: 0.150003
+  pluspin: 53  voltage: 3.29523  current: 0.150003  name: "C22-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C22.min"
+
+Electric 22:
+  name: "C2"
+  voltage: 3.2634
+  current: 0.150003
+  pluspin: 55  voltage: 3.2634  current: 0.150003  name: "C2-2"
+  minpin: 0  voltage: 0  current: -0.150003  name: "C2.min"
+
+Electric 23:
+  name: "L1"
+  voltage: 3.28234
+  current: 0.150003
+  pluspin: 57  voltage: 3.28234  current: 0.150003  name: "L1-1"
+  minpin: 0  voltage: 0  current: -0.150003  name: "L1.min"
+
+Electric 24:
+  name: "IC8"
+  voltage: 3.26689
+  current: 0.150003
+  pluspin: 58  voltage: 3.26689  current: 0.150003  name: "IC8-10"
+  minpin: 0  voltage: 0  current: -0.150003  name: "IC8.min"
+
+Electric 25:
+  name: "U4"
+  voltage: 3.26138
+  current: 0.150003
+  pluspin: 60  voltage: 3.26138  current: 0.150003  name: "U4-3"
+  minpin: 0  voltage: 0  current: -0.150003  name: "U4.min"
+
+Electric 26:
+  name: "IC7"
+  voltage: 3.26303
+  current: 0.150003
+  pluspin: 63  voltage: 3.26303  current: 0.150003  name: "IC7-10"
+  minpin: 0  voltage: 0  current: -0.150003  name: "IC7.min"
+
+Electric 27:
+  name: "U1"
+  voltage: 3.28314
+  current: 0.150003
+  pluspin: 65  voltage: 3.28314  current: 0.0968517  name: "U1-6"
+  pluspin: 66  voltage: 3.28314  current: 0.0531516  name: "U1-8"
+  minpin: 0  voltage: 0  current: -0.150003  name: "U1.min"
+
