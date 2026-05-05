@@ -3,7 +3,7 @@
 ## Overview
 The UHF Transceiver Board is a 4-layer PCB designed for space applications, 
 specifically for CubeSats. It is built around the Si4464 transceiver IC, 
-which has strong space heritage, and is designed to operate in the UHF 
+which has space heritage, and is designed to operate in the UHF 
 frequency band with military-grade components for reliability in harsh 
 space environments.
 
@@ -12,7 +12,7 @@ space environments.
 - **Modulation:** GFSK (Gaussian Frequency Shift Keying)
 - **Duplex:** Half Duplex
 - **Transceiver IC:** Silicon Labs Si4464 (space heritage)
-- **Microcontroller:** STM32U5
+- **Microcontroller:** STM32U575RGT6TR
 - **PCB Layers:** 4-Layer
 - **Application:** CubeSat Communication System
 
